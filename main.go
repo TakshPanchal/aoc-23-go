@@ -29,6 +29,8 @@ func main() {
 	// fmt.Printf("sum of all of the calibration values is %d \n", sum)
 
 	/* Day 2 */
+
+	// part 1
 	sum := 0
 	bag := day2.Bag{
 		Red:   12,
@@ -48,4 +50,21 @@ func main() {
 	}
 
 	fmt.Printf("sum of the IDs of possible games %d \n", sum)
+
+	// part2
+	sum = 0
+	for _, l := range ls {
+		g, err := day2.ExtractGame(l)
+		if err != nil {
+			panic(err)
+		}
+
+		b := day2.FewestPossibleBag(g)
+
+		sum += b.Red * b.Green * b.Blue
+	}
+	fmt.Printf("sum of the power of these fewest number of cubes of each color %d \n", sum)
+
+	/*---------------------------------------------------------*/
+
 }

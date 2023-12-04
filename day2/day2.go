@@ -78,3 +78,21 @@ func extractReveals(tail string) []ColorSet {
 	}
 	return sets
 }
+
+func FewestPossibleBag(g Game) Bag {
+	b := Bag{}
+
+	for _, r := range g.Reveals {
+		if r.Blue > b.Blue {
+			b.Blue = r.Blue
+		}
+		if r.Red > b.Red {
+			b.Red = r.Red
+		}
+		if r.Green > b.Green {
+			b.Green = r.Green
+		}
+	}
+
+	return Bag(b)
+}
