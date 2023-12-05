@@ -1,22 +1,14 @@
 package utils
 
 import (
-	"io"
-	"io/fs"
+	"os"
 	"strings"
 )
 
-func ReadLines(fSys fs.FS, fname string) ([]string, error) {
-	f, err := fSys.Open(fname)
+func ReadLines(fname string) []string {
+	fData, err := os.ReadFile(fname)
 	if err != nil {
-		return []string{}, nil
+		panic(err)
 	}
-	defer f.Close()
-
-	fData, err := io.ReadAll(f)
-	if err != nil {
-		return []string{}, nil
-	}
-
-	return strings.Split(string(fData), "\n"), nil
+	return strings.Split(string(fData), "\n")
 }
