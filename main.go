@@ -1,7 +1,7 @@
 package main
 
 import (
-	"aoc_23/day3"
+	"aoc_23/day4"
 	"aoc_23/utils"
 	"fmt"
 )
@@ -63,8 +63,16 @@ func main() {
 	/* --- Day 3: Gear Ratios --- */
 
 	// part1
-	partNums := day3.FindPartNumbers(ls)
-	sum := utils.SumAll(partNums)
-	fmt.Printf("sum of all of the part numbers in the engine schematic %d \n", sum)
+	// partNums := day3.FindPartNumbers(ls)
+	// sum := utils.SumAll(partNums)
+	// fmt.Printf("sum of all of the part numbers in the engine schematic %d \n", sum)
 
+	/* --- Day 4: Scratchcards --- */
+
+	// Part1
+	points := 0
+	for _, l := range ls {
+		points += day4.CalculatePoints(l)
+	}
+	fmt.Printf("No. of points are they worth in total is c%d \n", points)
 }
