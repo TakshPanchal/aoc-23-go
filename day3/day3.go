@@ -13,15 +13,32 @@ func isValidIndex(index int, s string) bool {
 	return index >= 0 && index < len(s)
 }
 
-func FindPartNumbers(schema []string) []int {
-	nums := []int{}
+type numIndex struct {
+	start, end int
+}
+
+func findAllNumIndexes(schema []string) (idx [][]numIndex) {
 	r, _ := regexp.Compile(`\d+`)
-	for i, s := range schema {
+	for _, s := range schema {
+		row := []numIndex{}
 		ns := r.FindAllIndex([]byte(s), -1)
 		for _, n := range ns {
-			flag := isPart(i, schema, n, s)
+			row = append(row, numIndex{start: n[0], end: n[1] - 1})
+		}
+		idx = append(idx, row)
+	}
+	return
+}
+
+func FindPartNumbers(schema []string) []int {
+	numIdx := findAllNumIndexes(schema)
+	nums := []int{}
+
+	for r, row := range numIdx {
+		for _, ni := range row {
+			flag := isPart(r, schema, []int{ni.start, ni.end + 1}, schema[r])
 			if flag {
-				num, err := strconv.Atoi(s[n[0]:n[1]])
+				num, err := strconv.Atoi(schema[r][ni.start : ni.end+1])
 				if err != nil {
 					panic(err)
 				}
@@ -63,4 +80,69 @@ func isPart(i int, schema []string, n []int, s string) bool {
 	}
 
 	return flag
+}
+
+type Gear struct {
+	N1, N2 int
+}
+
+func FindGears(schema []string) (gears []Gear) {
+	numIdx := findAllNumIndexes(schema)
+	r, _ := regexp.Compile(`\*`)
+	for rId, s := range schema {
+		starts := r.FindAllIndex([]byte(s), -1)
+		for _, star := range starts {
+			adjPart := 0
+			n1, n2 := 0, 0
+
+			// check adj in the same line
+			for _, num := range numIdx[rId] {
+				if star[0] == num.end+1 || star[0] == num.start-1 {
+					adjPart++
+					if adjPart == 1 {
+						n1, _ = strconv.Atoi(s[num.start : num.end+1])
+					} else if adjPart == 2 {
+						n2, _ = strconv.Atoi(s[num.start : num.end+1])
+						gears = append(gears, Gear{n1, n2})
+					}
+				}
+			}
+
+			// check adj in upper row
+			if rId-1 >= 0 {
+				for _, num := range numIdx[rId-1] {
+					if indexOverlap(num, star[0]) {
+						adjPart++
+						if adjPart == 1 {
+							n1, _ = strconv.Atoi(schema[rId-1][num.start : num.end+1])
+						} else if adjPart == 2 {
+							n2, _ = strconv.Atoi(schema[rId-1][num.start : num.end+1])
+							gears = append(gears, Gear{n1, n2})
+						}
+					}
+				}
+			}
+
+			if rId+1 < len(schema) {
+				for _, num := range numIdx[rId+1] {
+					if indexOverlap(num, star[0]) {
+						adjPart++
+						if adjPart == 1 {
+							n1, _ = strconv.Atoi(schema[rId+1][num.start : num.end+1])
+						} else if adjPart == 2 {
+							n2, _ = strconv.Atoi(schema[rId+1][num.start : num.end+1])
+							gears = append(gears, Gear{n1, n2})
+						}
+					}
+				}
+			}
+		}
+	}
+	return gears
+}
+
+func indexOverlap(p numIndex, i int) bool {
+	return ((p.start <= i && i <= p.end) || p.start == i || p.end == i) ||
+		((p.start <= i-1 && i-1 <= p.end) || p.start == i-1 || p.end == i-1) ||
+		((p.start <= i+1 && i+1 <= p.end) || p.start == i+1 || p.end == i+1)
 }
