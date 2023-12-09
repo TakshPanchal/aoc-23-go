@@ -1,7 +1,7 @@
 package main
 
 import (
-	"aoc_23/day3"
+	"aoc_23/day8"
 	"aoc_23/utils"
 	"fmt"
 )
@@ -68,12 +68,12 @@ func main() {
 	// fmt.Printf("sum of all of the part numbers in the engine schematic %d \n", sum)
 
 	// Part 2
-	gears := day3.FindGears(ls)
-	ratios := utils.MapSlice(gears, func(g day3.Gear) int {
-		return g.N1 * g.N2
-	})
-	sum := utils.SumAll(ratios)
-	fmt.Println("the sum of all of the gear ratios in your engine schematic", sum)
+	// gears := day3.FindGears(ls)
+	// ratios := utils.MapSlice(gears, func(g day3.Gear) int {
+	// 	return g.N1 * g.N2
+	// })
+	// sum := utils.SumAll(ratios)
+	// fmt.Println("the sum of all of the gear ratios in your engine schematic", sum)
 
 	/* --- Day 4: Scratchcards --- */
 
@@ -87,4 +87,7 @@ func main() {
 	// // Part 2
 	// pile := make([]int, len(ls))
 
+	/*--- Day 8: Haunted Wasteland ---*/
+	steps := day8.CalculateSteps(ls)
+	fmt.Printf("%d steps are required to reach ZZZ", steps)
 }
