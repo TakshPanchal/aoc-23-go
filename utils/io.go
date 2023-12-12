@@ -10,5 +10,6 @@ func ReadLines(fname string) []string {
 	if err != nil {
 		panic(err)
 	}
+	// TODO: Remove empty lines
 	return strings.Split(string(fData), "\n")
 }

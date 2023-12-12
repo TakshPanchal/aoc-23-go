@@ -2,11 +2,12 @@ package day4_test
 
 import (
 	"aoc_23/day4"
+	"aoc_23/utils"
+	"fmt"
 	"testing"
 )
 
-func Test(t *testing.T) {
-
+func TestCalculatePoints(t *testing.T) {
 	tt := []struct {
 		line string
 		want int
@@ -16,12 +17,23 @@ func Test(t *testing.T) {
 
 	for _, tc := range tt {
 		t.Run(tc.line, func(t *testing.T) {
-			got := day4.CalculatePoints(tc.line)
+			got := day4.CalculatePoints(day4.Card(tc.line))
 
 			if tc.want != got {
 				t.Errorf("Want %d, but got %d", tc.want, got)
 			}
 		})
 	}
+}
 
+func TestTotalScrachCard(t *testing.T) {
+	lines := utils.ReadLines("sample.txt")
+	cardCount := make([]int, len(lines))
+	for i := range cardCount {
+		cardCount[i] = 1
+	}
+
+	for i, card := lines{
+		
+	}
 }
